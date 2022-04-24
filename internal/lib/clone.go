@@ -4,6 +4,6 @@ import "fmt"
 
 func Clone() {
 
-	fmt.Println("Haan bhai bol")
+	fmt.Println("air working fine now")
 
 }
