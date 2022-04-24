@@ -4,6 +4,6 @@ import "fmt"
 
 func Clone() {
 
-	fmt.Println("air working fine now")
+	fmt.Println("Cloning the repositories...")
 
 }
