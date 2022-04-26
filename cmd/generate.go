@@ -1,8 +1,7 @@
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/automation-co/borzoi/internal/lib"
 	"github.com/spf13/cobra"
 )
 
@@ -11,7 +10,7 @@ var generateCmd = &cobra.Command{
 	Short: "Generates the config file",
 	Long:  `Generates the config file for borzoi using your current file structure.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("generate called")
+		lib.Generate()
 	},
 }
 
