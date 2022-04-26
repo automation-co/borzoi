@@ -57,6 +57,35 @@ Use "borzoi [command] --help" for more information about a command.
 
 ---
 
+### Example
+
+```javascript
+// borzoi.json
+{
+  "automation-co": {
+    "borzoi": {
+      "repo": "https://github.com/automation-co/borzoi.git"
+    },
+    "husky": {
+      "repo": "https://github.com/automation-co/husky.git"
+    }
+  }
+}
+
+```
+
+will result in
+
+```
+.
+├── automation-co
+│   ├── borzoi  
+│   └── husky  
+└── borzoi.json
+```
+
+---
+
 <div align="center">
 
 Developed by [@automation-co](https://github.com/automation-co)
