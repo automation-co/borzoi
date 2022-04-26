@@ -29,6 +29,8 @@ go install github.com/automation-co/borzoi@latest
 
 ### Getting Started
 
+Borzoi helps you to easily replicate and share file structure.
+
 You can use the `borzoi` command to run the borzoi command line tool.
 
 ```
