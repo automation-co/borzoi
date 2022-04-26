@@ -64,26 +64,25 @@ Use "borzoi [command] --help" for more information about a command.
 ```javascript
 // borzoi.json
 {
-  "automation-co": {
-    "borzoi": {
-      "repo": "https://github.com/automation-co/borzoi.git"
-    },
-    "husky": {
-      "repo": "https://github.com/automation-co/husky.git"
-    }
-  }
+  "automation-co/borzoi": "https://github.com/automation-co/borzoi.git",
+  "automation-co/husky": "https://github.com/automation-co/husky.git",
+  "dependencies/air": "https://github.com/cosmtrek/air.git",
+  "dependencies/go-git": "https://github.com/go-git/go-git.git"
 }
 
 ```
 
-will result in
+`borzoi clone` using this config file will result in
 
 ```
 .
 ├── automation-co
-│   ├── borzoi  
-│   └── husky  
-└── borzoi.json
+│   ├── borzoi
+│   └── husky
+├── borzoi.json
+└── dependencies
+    ├── air
+    └── go-git
 ```
 
 ---

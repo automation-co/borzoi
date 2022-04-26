@@ -1,30 +1,20 @@
 package lib
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 
 	"github.com/automation-co/borzoi/internal/utils"
 )
 
+// =============================================================================
+
 func Generate() {
-	fmt.Println("Generating the config file...")
 
-	// type Repo struct {
-	// 	Name string
-	// 	URL  string
-	// }
-
-	// type Folder struct {
-	// 	Name    string
-	// 	Repos   []Repo
-	// 	Folders []Folder
-	// }
-
-	// folders := Folder{}
-
-	// folders := make(map[string]interface{})
+	repos := make(map[string]interface{})
 
 	// Recursing over the directories in the current directory
 	err := filepath.WalkDir(
@@ -35,18 +25,17 @@ func Generate() {
 				return err
 			}
 
-			// Stuff goes here...
-			// fmt.Println(path)
-
-			// check if the directory is a git repository
-			// if it is, then we can add it to the config file as a repository
-			// if it is not, then we can add it to the config file as a folder
-
 			isGitRepo := utils.IsGitRepo(path)
 
 			if isGitRepo {
+				// Get the url of the repo
+				url, err := utils.GetRepoUrl(path)
 
-				fmt.Println("Git repo found : " + path)
+				if err != nil {
+					return err
+				}
+				// add the repo to the repos map
+				repos[path] = url
 			}
 
 			return nil
@@ -57,4 +46,21 @@ func Generate() {
 		panic(err)
 	}
 
+	// Write the config file ---------------------------------------------------
+
+	// convert the repos to a json string
+	jsonString, err := json.Marshal(repos)
+
+	// write the file as borzoi.json
+	err = ioutil.WriteFile("borzoi.json", jsonString, 0644)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Config file generated 👍")
+
+	// -------------------------------------------------------------------------
+
 }
+
+// =============================================================================
