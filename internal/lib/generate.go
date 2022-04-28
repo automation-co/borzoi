@@ -36,6 +36,7 @@ func Generate() {
 				}
 				// add the repo to the repos map
 				repos[path] = url
+				return filepath.SkipDir
 			}
 
 			return nil
