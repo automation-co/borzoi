@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -69,4 +70,25 @@ func GetRepoUrl(path string) (string, error) {
 	return url, err
 }
 
+// Tells if the file needs to be ignored
+func IsIgnored(path string) bool{
+	readFile, err := os.Open(".borzoiignore")
+  
+    if err != nil {
+        fmt.Println(err)
+    }
+    fileScanner := bufio.NewScanner(readFile)
+ 
+    fileScanner.Split(bufio.ScanLines)
+  
+    for fileScanner.Scan() {
+        ignoreQuery := fileScanner.Text()
+		if strings.Contains(path, ignoreQuery){
+			return true
+		}
+    }
+  
+    readFile.Close()
+	return false
+}
 // -----------------------------------------------------------------------------
