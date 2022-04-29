@@ -25,6 +25,12 @@ func Generate() {
 				return err
 			}
 
+			isIgnored := utils.IsIgnored(path)
+
+			if isIgnored{
+				return filepath.SkipDir
+			}
+
 			isGitRepo := utils.IsGitRepo(path)
 
 			if isGitRepo {
