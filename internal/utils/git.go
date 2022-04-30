@@ -75,7 +75,7 @@ func IsIgnored(path string) bool{
 	readFile, err := os.Open(".borzoiignore")
   
     if err != nil {
-        fmt.Println(err)
+        return false
     }
     fileScanner := bufio.NewScanner(readFile)
  
