@@ -27,7 +27,7 @@ func Generate() {
 
 			isIgnored := utils.IsIgnored(path)
 
-			if isIgnored{
+			if isIgnored {
 				return filepath.SkipDir
 			}
 

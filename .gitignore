@@ -17,4 +17,7 @@ tmp*
 # Go workspace file
 go.work
 
+# vs code
+.vscode
+
 borzoi
