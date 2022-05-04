@@ -2,7 +2,6 @@ package lib
 
 import (
 	"fmt"
-	"os"
 	"sync"
 
 	"github.com/automation-co/borzoi/internal/config"
@@ -17,15 +16,18 @@ import (
 func Clone(username string, accessToken string) {
 
 	fmt.Println("Cloning the repositories...")
+	fmt.Println("")
 
 	// Read the config file
 	conf := config.ReadConfig()
 
+	// Get username
 	usernameLocal := utils.GetUsername()
 	if username == "" {
 		username = usernameLocal
 	}
 
+	// Create waitgroup
 	var wg sync.WaitGroup = sync.WaitGroup{}
 
 	// Iterate over the repos in the config file
@@ -35,8 +37,9 @@ func Clone(username string, accessToken string) {
 			// Get the url of the repo
 			repoUrl := url.(string)
 
-			// Clone the repo
+			fmt.Printf("  [x]  Cloning %s\n", repoUrl)
 
+			// Clone the repo
 			_, err := git.PlainClone(path, false, &git.CloneOptions{
 				URL:               repoUrl,
 				RecurseSubmodules: git.DefaultSubmoduleRecursionDepth,
@@ -44,7 +47,7 @@ func Clone(username string, accessToken string) {
 			if err != nil {
 
 				if err.Error() == "authentication required" {
-					_, errAuth := git.PlainClone(path, false, &git.CloneOptions{
+					_, err := git.PlainClone(path, false, &git.CloneOptions{
 						URL: repoUrl,
 						Auth: &http.BasicAuth{
 							Username: username,
@@ -52,12 +55,16 @@ func Clone(username string, accessToken string) {
 							// needs to be created using github api
 						},
 						RecurseSubmodules: git.DefaultSubmoduleRecursionDepth,
-						Progress:          os.Stdout,
 					})
-					if errAuth != nil {
-						fmt.Println(url)
-						panic(errAuth)
+					if err != nil {
+						if err.Error() == "repository already exists" {
+							fmt.Println("  [o]  Skipping " + path + " because it already exists")
+						} else {
+							panic(err)
+						}
 					}
+				} else if err.Error() == "repository already exists" {
+					fmt.Println("  [o]  Skipping " + path + " because it already exists")
 				} else {
 					panic(err)
 				}
@@ -67,6 +74,9 @@ func Clone(username string, accessToken string) {
 
 	}
 	wg.Wait()
+
+	fmt.Println("")
+	fmt.Println("Woof 👍")
 }
 
 // =============================================================================

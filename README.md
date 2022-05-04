@@ -57,6 +57,22 @@ Flags:
 Use "borzoi [command] --help" for more information about a command.
 ```
 
+### Authentication
+
+If you want to use borzoi with a private repository, you can use the `--access` flag to authenticate.
+Pass the access token as the value of the flag.
+
+> Make sure the personal access token has repo scope.
+
+If you need help, creating the personal access token, please visit the [GitHub API documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+
+If you don't have a global git username or you want to use a different username, you can use the `--username` flag to authenticate.
+Pass the username as the value of the flag.
+
+```
+borzoi clone --access <access_token> --username <username>
+```
+
 ---
 
 ### Example
