@@ -62,7 +62,7 @@ func GetRepoUrl(path string) (string, error) {
 	urls := goGitConfig.Remotes["origin"].URLs
 
 	if len(urls) < 1 {
-		return "", fmt.Errorf("No remote origin found")
+		return "", fmt.Errorf("no remote origin found")
 	}
 
 	url := urls[0]
@@ -71,7 +71,7 @@ func GetRepoUrl(path string) (string, error) {
 }
 
 // Tells if the file needs to be ignored
-func IsIgnored(path string) bool{
+func IsIgnored(path string) bool {
 	readFile, err := os.Open(".borzoiignore")
   
     if err != nil {
@@ -86,9 +86,37 @@ func IsIgnored(path string) bool{
 		if strings.Contains(path, ignoreQuery){
 			return true
 		}
-    }
-  
-    readFile.Close()
+	}
+
+	readFile.Close()
 	return false
 }
+
+// Gets global config of Git
+func GetUsername() string {
+
+	// get the path of the global git config
+	gitConfig, err := config.LoadConfig(config.GlobalScope)
+	if err != nil {
+		panic(err)
+	}
+	// convert to json
+	gitConfigJson, err := gitConfig.Marshal()
+	if err != nil {
+		panic(err)
+	}
+
+	gitConfigString := string(gitConfigJson)
+	reader := strings.NewReader(gitConfigString)
+	goGitConfig, err := config.ReadConfig(reader)
+	if err != nil {
+		panic(err)
+	}
+
+	username := goGitConfig.User.Name
+
+	return username
+
+}
+
 // -----------------------------------------------------------------------------
