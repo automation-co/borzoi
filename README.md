@@ -2,14 +2,9 @@
 
 <div align="left">
 
-# borzoi
-
-[![Build Status](https://github.com/automation-co/borzoi/workflows/Go/badge.svg?branch=main)](https://github.com/automation-co/borzoi/actions?query=branch%3Amain)
-[![Release](https://img.shields.io/github/release/automation-co/borzoi.svg)](https://github.com/automation-co/borzoi/releases)
-![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/automation-co/borzoi)
-[![Go Report Card](https://goreportcard.com/badge/github.com/automation-co/borzoi)](https://goreportcard.com/report/github.com/automation-co/borzoi)
-![GitHub](https://img.shields.io/github/license/automation-co/borzoi)
-![GitHub issues](https://img.shields.io/github/issues/automation-co/borzoi)
+ <h1> borzoi </h1>
+ 
+ <a href="https://github.com/automation-co/borzoi/actions?query=branch%3Amain"><img src="https://github.com/automation-co/borzoi/workflows/Go/badge.svg?branch=main" /> </a> <a href="https://github.com/automation-co/borzoi/releases"> <img src="https://img.shields.io/github/release/automation-co/borzoi.svg" /> </a> <img src="https://img.shields.io/github/go-mod/go-version/automation-co/borzoi" /> <a href="https://goreportcard.com/report/github.com/automation-co/borzoi"><img src="https://goreportcard.com/badge/github.com/automation-co/borzoi" /> </a> <img src="https://img.shields.io/github/license/automation-co/borzoi" /> <img src="https://img.shields.io/github/issues/automation-co/borzoi" />
 
  </div>
 
@@ -105,6 +100,6 @@ borzoi clone --access <access_token> --username <username>
 
 <div align="center">
 
-Developed by [@automation-co](https://github.com/automation-co)
+ Developed by <a href="https://github.com/automation-co" >@automation-co</a>
 
 </div>
