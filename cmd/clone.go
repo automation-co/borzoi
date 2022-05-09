@@ -22,7 +22,7 @@ var (
 				if utils.IsConfigFilePresent() {
 					lib.Clone(Username, AccessToken)
 				} else {
-					lib.FreezeClone()
+					lib.FreezeClone(Username, AccessToken)
 				}
 
 			} else {

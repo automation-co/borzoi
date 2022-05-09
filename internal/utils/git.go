@@ -9,7 +9,9 @@ import (
 	"strings"
 
 	"github.com/automation-co/borzoi/internal/types"
+	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/config"
+	"github.com/go-git/go-git/v5/plumbing"
 )
 
 // -----------------------------------------------------------------------------
@@ -135,6 +137,8 @@ func GetRepoUrl(path string) (string, error) {
 	return url, err
 }
 
+// -----------------------------------------------------------------------------
+
 // Tells if the file needs to be ignored
 func IsIgnored(path string) bool {
 	readFile, err := os.Open(".borzoiignore")
@@ -156,6 +160,8 @@ func IsIgnored(path string) bool {
 	readFile.Close()
 	return false
 }
+
+// -----------------------------------------------------------------------------
 
 // Gets global config of Git
 func GetUsername() string {
@@ -182,6 +188,29 @@ func GetUsername() string {
 
 	return username
 
+}
+
+// -----------------------------------------------------------------------------
+
+func ResetHard(path string, sha string) error {
+
+	r, _ := git.PlainOpen(path)
+	w, err := r.Worktree()
+	commit := plumbing.NewHash(sha)
+	if err != nil {
+		return err
+	}
+
+	err = w.Reset(&git.ResetOptions{
+		Mode:   git.HardReset,
+		Commit: commit,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // -----------------------------------------------------------------------------
