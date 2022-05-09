@@ -42,6 +42,7 @@ Usage:
 Available Commands:
   clone       Clones the repos
   completion  Generate the autocompletion script for the specified shell
+  freeze      Generates borzoi-lock.json
   generate    Generates the config file
   help        Help about any command
 
