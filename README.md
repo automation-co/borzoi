@@ -79,7 +79,7 @@ If you wish to save the current configuration of your multirepo you can use the 
 
 
 ```javascript
-// borzoi.json
+// borzoi-lock.json
 {
   "borzoi": {
     "repo": "https://github.com/automation-co/borzoi",
