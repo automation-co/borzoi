@@ -69,7 +69,13 @@ Pass the username as the value of the flag.
 borzoi clone --access <access_token> --username <username>
 ```
 
+### Ignore
+
+If you want to exclude certain directories when using the `generate` command, you can add a `.borzoiignore` file which can have a list of subdirectories whose path you wish to exclude.
+
 ---
+
+
 
 ### Example
 
