@@ -73,6 +73,22 @@ borzoi clone --access <access_token> --username <username>
 
 If you want to exclude certain directories when using the `generate` command, you can add a `.borzoiignore` file which can have a list of subdirectories whose path you wish to exclude.
 
+### Freeze
+
+If you wish to save the current configuration of your multirepo you can use the `freeze` command to generate `borzoi-lock.json` which will have other crucial information regarding the commit, such as it's ID and branch other than the path and repo url. Here's an example `borzoi-lock.json` file : 
+
+
+```javascript
+// borzoi.json
+{
+  "borzoi": {
+    "repo": "https://github.com/automation-co/borzoi",
+    "branch": "main",
+    "commit": "3656b59d7951db4c38fca0a60c86c59cb8e7b92f"
+  }
+}
+```
+
 ---
 
 
