@@ -7,22 +7,39 @@ import (
 
 	"github.com/automation-co/borzoi/internal/config"
 	"github.com/automation-co/borzoi/internal/utils"
-	"github.com/go-git/go-git/plumbing/transport"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
+	"github.com/manifoldco/promptui"
 )
 
 // =============================================================================
 
 // Clones the repos in the given config file
-func Clone(username string, accessToken string) {
+func Clone(username string, accessToken string, privateKeyFile string) {
 
 	fmt.Println("Cloning the repositories...")
 	fmt.Println("")
 
 	// Read the config file
 	conf := config.ReadConfig()
+
+	// Inputting password if privatekeyfile provided
+	var password string
+	if privateKeyFile != "" {
+
+		prompt := promptui.Prompt{
+			Label: "Password",
+			Mask:  '*',
+		}
+
+		result, err := prompt.Run()
+		password = result
+		if err != nil {
+			fmt.Printf("Prompt failed %v\n", err)
+			return
+		}
+	}
 
 	// Get username
 	usernameLocal := utils.GetUsername()
@@ -52,8 +69,7 @@ func Clone(username string, accessToken string) {
 				if err.Error() == "authentication required" {
 					// Check if repo is ssh or http
 
-					var auth transport.AuthMethod
-					auth = &http.BasicAuth{
+					auth := &http.BasicAuth{
 						Username: username,
 						Password: accessToken, // personal access token
 						// needs to be created using github api
@@ -70,15 +86,16 @@ func Clone(username string, accessToken string) {
 						} else {
 							panic(err)
 						}
+					} else {
+						panic(err)
 					}
 				} else if err.Error() == "error creating SSH agent: \"SSH agent requested, but could not detect Pageant or Windows native SSH agent\"" {
-					privateKeyFile := "C:\\Users\\yojay\\.ssh\\id_rsa"
-					password := ""
 					_, err := os.Stat(privateKeyFile)
 					if err != nil {
 						fmt.Printf("read file %s failed %s\n", privateKeyFile, err.Error())
 						return
 					}
+
 					// TODO: make public keys work
 					publicKeys, err := ssh.NewPublicKeysFromFile("git", privateKeyFile, password)
 					if err != nil {
@@ -99,8 +116,6 @@ func Clone(username string, accessToken string) {
 							panic(err)
 						}
 					}
-					fmt.Println(err.Error())
-					fmt.Println("here instead")
 				} else if err.Error() == "repository already exists" {
 					fmt.Println("  [o]  Skipping " + path + " because it already exists")
 				} else {
