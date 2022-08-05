@@ -14,6 +14,8 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
+	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
+	"github.com/manifoldco/promptui"
 	"github.com/mitchellh/mapstructure"
 )
 
@@ -79,11 +81,28 @@ func Freeze() {
 
 // =============================================================================
 
-func FreezeClone(username string, accessToken string) {
+func FreezeClone(username string, accessToken string, privateKeyFile string) {
 
 	fmt.Println("Cloning the state from borzoi-lock file...")
 
 	conf := config.ReadLockFile()
+
+	// Inputting password if privatekeyfile provided
+	var password string
+	if privateKeyFile != "" {
+
+		prompt := promptui.Prompt{
+			Label: "Password",
+			Mask:  '*',
+		}
+
+		result, err := prompt.Run()
+		password = result
+		if err != nil {
+			fmt.Printf("Prompt failed %v\n", err)
+			return
+		}
+	}
 
 	// Get username
 	usernameLocal := utils.GetUsername()
@@ -139,6 +158,34 @@ func FreezeClone(username string, accessToken string) {
 						}
 					}
 
+				} else if err.Error() == "error creating SSH agent: \"SSH agent requested, but could not detect Pageant or Windows native SSH agent\"" {
+					_, err := os.Stat(privateKeyFile)
+					if err != nil {
+						fmt.Printf("read file %s failed %s\n", privateKeyFile, err.Error())
+						return
+					}
+					// TODO: make public keys work
+					publicKeys, err := ssh.NewPublicKeysFromFile("git", privateKeyFile, password)
+					if err != nil {
+						fmt.Printf("generate publickeys failed: %s\n", err.Error())
+						return
+					}
+					auth := publicKeys
+					_, err = git.PlainClone(path, false, &git.CloneOptions{
+						URL:               m.Repo,
+						Auth:              auth,
+						RecurseSubmodules: git.DefaultSubmoduleRecursionDepth,
+						SingleBranch:      true,
+						ReferenceName:     plumbing.ReferenceName(referenceName),
+					})
+					if err != nil {
+						if err.Error() == "repository already exists" {
+							fmt.Println("  [o]  Skipping " + path + " because it already exists")
+						} else {
+							fmt.Println("dint do shit")
+							panic(err)
+						}
+					}
 				} else if err.Error() == "repository already exists" {
 					fmt.Println("  [o]  Skipping " + path + " because it already exists")
 				} else {
