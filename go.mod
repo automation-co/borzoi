@@ -3,7 +3,7 @@ module github.com/automation-co/borzoi
 go 1.18
 
 require (
-	github.com/google/go-cmp v0.5.8
+	github.com/google/go-cmp v0.5.9
 	github.com/manifoldco/promptui v0.9.0
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.13.0
